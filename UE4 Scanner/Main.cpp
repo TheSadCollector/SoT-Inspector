@@ -1344,6 +1344,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
                     if (iRet > 0) {
                         int ItemIndex = SendMessage(hListView, LVM_GETNEXTITEM, -1, LVNI_SELECTED);
                         LVITEM SelectedItem;
+                        SelectedItem.mask = LVIF_TEXT | LVIF_PARAM;
                         SelectedItem.iItem = ItemIndex;
                         ListView_GetItem(hListView, &SelectedItem);
                         char msg[128];
