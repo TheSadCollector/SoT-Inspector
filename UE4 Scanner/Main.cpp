@@ -4,6 +4,8 @@
 #include <locale>
 #include <codecvt>
 #include <TlHelp32.h>
+#include <random>
+#include <string>
 
 #pragma comment(lib,"Comctl32.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' \
@@ -362,6 +364,22 @@ HWND hListBox;
 HWND hListView;
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 #define SET_STATUS(x) SetWindowText(hStatic,  x)
+
+
+
+// https://stackoverflow.com/a/47978023/15495138
+static std::string random_string()
+{
+    std::string str("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+
+    std::random_device rd;
+    std::mt19937 generator(rd());
+
+    std::shuffle(str.begin(), str.end(), generator);
+
+    return str.substr(0, 32);    // assumes 32 < number of characters in str         
+}
+
 static HWND showWindow()
 {
     INITCOMMONCONTROLSEX icex;           // Structure for control initialization.
@@ -383,7 +401,7 @@ static HWND showWindow()
     RECT wr = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
     unsigned int dwStyle = ( WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX);
-    hWnd = CreateWindowEx(NULL, wndClass, "SOT Inspector", dwStyle, 300, 300, wr.right - wr.left, wr.bottom - wr.top, nullptr, nullptr, GetModuleHandle(nullptr), nullptr);
+    hWnd = CreateWindowEx(NULL, wndClass, random_string().c_str(), dwStyle, 300, 300, wr.right - wr.left, wr.bottom - wr.top, nullptr, nullptr, GetModuleHandle(nullptr), nullptr);
 
     hStatic = CreateWindowEx(0, WC_STATICA, NULL,
         WS_CHILD | WS_VISIBLE,
@@ -475,7 +493,6 @@ static HWND showWindow()
 #include <Shlwapi.h>
 #pragma comment(lib,"Shlwapi.lib")
 //reference https://puu.sh/nvF9d/04c184dfec.png
-
 
 struct FPointer
 {
