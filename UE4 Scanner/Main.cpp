@@ -365,8 +365,6 @@ HWND hListView;
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 #define SET_STATUS(x) SetWindowText(hStatic,  x)
 
-
-
 // https://stackoverflow.com/a/47978023/15495138
 static std::string random_string()
 {
